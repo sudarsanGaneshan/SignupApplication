@@ -32,10 +32,9 @@ public class AdminController {
     public ResponseEntity<?> updateUserAccess(@PathVariable(value = "userId") Long userId,
                                               @RequestParam("userAccess") userAccessEnum userAccess) {
 
-        Optional<Customer> user = signupService.findUserById(userId);
-        System.out.println("user "+user.get().getId());
-        if(user.isPresent()){
-            signupService.updateUser(user.get(), userAccess);
+        Customer user = signupService.findUserById(userId);
+        if(user != null){
+            signupService.updateUser(user, userAccess);
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

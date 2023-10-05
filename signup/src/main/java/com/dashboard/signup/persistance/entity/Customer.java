@@ -2,13 +2,10 @@ package com.dashboard.signup.persistance.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.bson.Document;
 
-@Document(collection = "Signup")
 public class Customer {
 
-    @Transient
-    public static final String SEQUENCE_NAME = "users_sequence";
     @Id
     private long id;
 
@@ -24,6 +21,16 @@ public class Customer {
 
     private String userAccess;
 
+    public Customer(){}
+
+    public Customer(Customer user){
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
+        this.email = user.email;
+        this.userName = user.userName;
+        this.password = user.password;
+        this.userAccess = user.userAccess;
+    }
     public Customer(String firstName, String lastName, String email, String userName, String password, String userAccess){
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,6 +38,18 @@ public class Customer {
         this.userName = userName;
         this.password = password;
         this.userAccess = userAccess;
+    }
+
+    public static Customer fromDocument(Document document) {
+        Customer customer = new Customer();
+        customer.setId(document.getLong("id"));
+        customer.setUserName(document.getString("userName"));
+        customer.setFirstName(document.getString("firstName"));
+        customer.setLastName(document.getString("lastName"));
+        customer.setEmail(document.getString("email"));
+        customer.setPassword(document.getString("password"));
+        customer.setUserAccess(document.getString("userAccess"));
+        return customer;
     }
 
 
